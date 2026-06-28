@@ -4,6 +4,7 @@
 
 - Fix highlighting of `type` keyword followed by parenthesis in an export
   list ([#267](https://github.com/haskell/language-haskell/pull/257)).
+- Add support for `TypeData` type data declarations.
 
 ## 3.8.0 - 14.06.2026
 

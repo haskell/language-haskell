@@ -83,7 +83,7 @@ patterns:
   # (only way to distinguish between GADT and ADT)
   - begin: >-
       (?x)
-        (?:^(\s*)|(?<!')\b)(data|newtype)(?:\s+(instance))?\s+
+        (?:^(\s*)|(?<!')\b)(?:(type)\s+)?(data|newtype)(?:\s+(instance))?\s+
         # Keep consuming characters until:
         ((?:(?!
         # the equals symbol or the start of a single-line comment, or
@@ -100,12 +100,13 @@ patterns:
         ).)*)
         (?=\b(?<!'')where\b(?!''))
     beginCaptures:
-      '2': {name: keyword.other.$2.haskell}
-      '3': {name: keyword.other.instance.haskell}
-      '4':
+      '2': {name: keyword.other.type.haskell}
+      '3': {name: keyword.other.$3.haskell}
+      '4': {name: keyword.other.instance.haskell}
+      '5':
         patterns:
           - include: '#type_signature'
-    name: meta.declaration.$2.generalized.haskell
+    name: meta.declaration.$3.generalized.haskell
     end: |
       (?x) # Detect end of data declaration:
                # Deriving clause
@@ -205,8 +206,8 @@ patterns:
   # ADT declaration (no "where" keyword on the same line)
   - begin: >-
       (?x)
-        # Data declaration
-        (?:^(\s*)|(?<!')\b)(data|newtype)(?:\s+(family|instance))?\s+
+        # Data declaration.
+        (?:^(\s*)|(?<!')\b)(?:(type)\s+)?(data|newtype)(?:\s+(family|instance))?\s+
         # Keep consuming characters until:
         (((?!
         # the equals symbol or the start of a single-line comment, or
@@ -222,12 +223,13 @@ patterns:
         #
         ).)*)
     beginCaptures:
-      '2': {name: keyword.other.$2.haskell}
+      '2': {name: keyword.other.type.haskell}
       '3': {name: keyword.other.$3.haskell}
-      '4':
+      '4': {name: keyword.other.$4.haskell}
+      '5':
         patterns:
           - include: '#type_signature'
-    name: meta.declaration.$2.algebraic.haskell
+    name: meta.declaration.$3.algebraic.haskell
     end: >-
       (?x) # Detect end of data declaration:
            # Deriving clause
