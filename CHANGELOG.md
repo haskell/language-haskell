@@ -1,5 +1,10 @@
 # ChangeLog
 
+## unreleased
+
+- Fix highlighting of `type` keyword followed by parenthesis in an export
+  list ([#267](https://github.com/haskell/language-haskell/pull/257)).
+
 ## 3.8.0 - 14.06.2026
 
 - Add automatic release workflows ([#257](https://github.com/haskell/language-haskell/pull/257)), thanks to [@fendor](http://github.com/fendor)

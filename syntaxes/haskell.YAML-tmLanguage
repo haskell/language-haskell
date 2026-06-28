@@ -695,20 +695,23 @@ repository:
           '1': {name: keyword.other.module.haskell}
       - include: '#comma'
       - include: '#export_constructs'
-      - begin: '\('
-        beginCaptures:
-          '0': {name: punctuation.paren.haskell}
-        end: '\)'
-        endCaptures:
-          '0': {name: punctuation.paren.haskell}
-        patterns:
-          - include: '#comment_like'
-          - include: '#record_wildcard'
-          - match: >-
-              (\()\s*(:[\p{S}\p{P}&&[^(),;\[\]`{}_"']]*)\s*(\))
-            name: constant.other.operator.prefix.haskell
-          - include: '#export_constructs'
-          - include: '#comma'
+      - include: '#export_subordinate_list'
+  # Parenthesised list of subordinates in an import/export item.
+  export_subordinate_list:
+    begin: '\('
+    beginCaptures:
+      '0': {name: punctuation.paren.haskell}
+    end: '\)'
+    endCaptures:
+      '0': {name: punctuation.paren.haskell}
+    patterns:
+      - include: '#comment_like'
+      - include: '#record_wildcard'
+      - match: >-
+          (\()\s*(:[\p{S}\p{P}&&[^(),;\[\]`{}_"']]*)\s*(\))
+        name: constant.other.operator.prefix.haskell
+      - include: '#export_constructs'
+      - include: '#comma'
   export_constructs:
     patterns:
       - include: '#comment_like'
@@ -737,6 +740,7 @@ repository:
           - include: '#reserved_symbol'
           - include: '#type_constructor'
           - include: '#type_operator'
+          - include: '#export_subordinate_list'
       - include: '#record_wildcard'
       - include: '#reserved_symbol'
       - match: >-
