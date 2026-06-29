@@ -136,7 +136,8 @@ patterns:
       - include: '$self'
   # A GADT declaration with 'where' on the same line as the 'data'/'newtype'.
   # (The multi-line case is handled separately via '#gadt_where_body'.)
-  - begin: >-
+  - &gadt_declaration
+    begin: >-
       (?x)
         (?:^(\s*)|(?<!')\b)(?:(type)\s+)?(data|newtype)(?:\s+(instance))?\s+
         # Keep consuming characters until:
@@ -190,7 +191,8 @@ patterns:
       - include: '#deriving'
       - include: '#gadt_constructor'
   # ADT declaration (no 'where' keyword on the same line)
-  - begin: >-
+  - &adt_declaration
+    begin: >-
       (?x)
         # Data declaration.
         (?:^(\s*)|(?<!')\b)(?:(type)\s+)?(data|newtype)(?:\s+(family|instance))?\s+
@@ -327,6 +329,13 @@ patterns:
     patterns:
       - include: '#comment_like'
       - include: '#family_or_instance' # Handle 'family'/'instance' keywords on subsequent line
+      # A 'data'/'newtype' on a subsequent line is a (split) 'type data'
+      # declaration; delegate to the data rules so it is highlighted as one. (We
+      # cannot scope the leading 'type' line itself as part of the data
+      # declaration -- that is a TextMate limitation -- but the rest is correct.)
+      - *gadt_declaration
+      - *adt_declaration
+      - include: '#gadt_where_body'
       - include: '#type_signature'
   - begin: '(?:^(\s*)|(?<!'')\b)(instance)(\b(?!''))'
     beginCaptures:
